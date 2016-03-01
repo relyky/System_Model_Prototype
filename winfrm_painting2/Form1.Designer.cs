@@ -38,14 +38,13 @@
             // 
             // btnAddEntity
             // 
-            this.btnAddEntity.Enabled = false;
             this.btnAddEntity.Location = new System.Drawing.Point(12, 12);
             this.btnAddEntity.Name = "btnAddEntity";
             this.btnAddEntity.Size = new System.Drawing.Size(74, 31);
             this.btnAddEntity.TabIndex = 0;
             this.btnAddEntity.Text = "Add Entity";
             this.btnAddEntity.UseVisualStyleBackColor = true;
-            this.btnAddEntity.Visible = false;
+            this.btnAddEntity.Click += new System.EventHandler(this.btnAddEntity_Click);
             // 
             // btnRun
             // 
@@ -79,7 +78,6 @@
             this.btnRunStep.TabIndex = 3;
             this.btnRunStep.Text = "Run Step";
             this.btnRunStep.UseVisualStyleBackColor = true;
-            this.btnRunStep.Visible = false;
             this.btnRunStep.Click += new System.EventHandler(this.btnRunStep_Click);
             // 
             // Form1
@@ -93,6 +91,8 @@
             this.Controls.Add(this.btnAddEntity);
             this.Name = "Form1";
             this.Text = "System Model - Prototype";
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace winfrm_painting2
         protected Collection<SimsAffect> m_affects = new Collection<SimsAffect>();
 
         #endregion
+
+        protected SimsState m_selectedState = null;
 
         protected int runRound = 0;
 
@@ -45,6 +48,8 @@ namespace winfrm_painting2
             m_affects.Add(new SimsAffect(m_states[3], m_states[0], +0.5f));
             m_affects.Add(new SimsAffect(m_states[3], m_states[4], +0.5f));
             m_affects.Add(new SimsAffect(m_states[4], m_states[0], -1.25f));
+
+            m_selectedState = m_states[2];
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -57,6 +62,10 @@ namespace winfrm_painting2
 
             foreach (var c in m_affects)
                 c.Draw(e.Graphics);
+
+            if(m_selectedState != null)
+                m_selectedState.DrawFocus(e.Graphics);
+
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -116,7 +125,55 @@ namespace winfrm_painting2
 
         private void btnRunStep_Click(object sender, EventArgs e)
         {
+            // trigger event
             timer1_Tick(null, null);
         }
+
+        private void btnAddEntity_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        {
+            //Debug.Print("ON : Form1_MouseClick");
+
+            //this.m_selectedState = null;
+            //foreach (var c in m_states)
+            //{
+            //    if (c.HitTest(e.Location))
+            //    {
+            //        this.m_selectedState = c;
+            //        break;
+            //    }
+            //}
+
+            //// 重繪畫面
+            //this.Invalidate();
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            Debug.Print("ON : Form1_MouseMove");
+
+            this.m_selectedState = null;
+            if(e.Button == MouseButtons.Left)
+            {
+                //this.m_selectedState = null;
+                foreach (var c in m_states)
+                {
+                    if (c.HitTest(e.Location))
+                    {
+                        this.m_selectedState = c;
+                        c.SetPosition(e.Location);
+                        break;
+                    }
+                }
+
+                // 重繪畫面
+                this.Invalidate();
+            }
+        }
+
     }
 }

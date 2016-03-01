@@ -1,0 +1,9 @@
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\bin\Debug\winfrm_painting2.exe.config
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\bin\Debug\winfrm_painting2.exe
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\bin\Debug\winfrm_painting2.pdb
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Debug\winfrm_painting2.csprojResolveAssemblyReference.cache
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Debug\winfrm_painting2.Form1.resources
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Debug\winfrm_painting2.Properties.Resources.resources
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Debug\winfrm_painting2.csproj.GenerateResource.Cache
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Debug\winfrm_painting2.exe
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Debug\winfrm_painting2.pdb

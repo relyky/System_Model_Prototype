@@ -26,6 +26,7 @@ namespace winfrm_painting2
         protected Pen pen = new Pen(Color.BlueViolet, 3);
         protected Font font = SystemFonts.DialogFont;
         protected Brush brush = Brushes.BlueViolet;
+        protected Pen focusPen = new Pen(Color.YellowGreen, 3);
         #endregion
 
         //public int CX { get { return this.cx; }}
@@ -40,6 +41,9 @@ namespace winfrm_painting2
             cx = _cx;
             cy = _cy;
             r = _r;
+
+            // init. 設定成虛線
+            focusPen.DashStyle = DashStyle.Dash;
         }
 
         public void Draw(Graphics g)
@@ -73,6 +77,40 @@ namespace winfrm_painting2
             g.DrawString(delta_str, this.font, this.brush, x, y);
 
         }
+
+        public void DrawFocus(Graphics g)
+        {
+            float x = cx - r - 6;
+            float y = cy - r - 6;
+            float w = r + r + 12;
+            float h = r + r + 12;
+           
+            g.DrawEllipse(this.focusPen, x, y, w, h);
+
+
+            //Graphics buttonGraphics = Button3.CreateGraphics();
+            //Pen myPen = new Pen(Color.ForestGreen, 4.0F);
+            //myPen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
+
+            //Rectangle theRectangle = Button3.ClientRectangle;
+            //theRectangle.Inflate(-2, -2);
+            //buttonGraphics.DrawRectangle(myPen, theRectangle);
+            //buttonGraphics.Dispose();
+            //myPen.Dispose();
+            
+        }
+
+        public bool HitTest(Point pos)
+        {
+            int dr = (int)Math.Sqrt(Math.Pow(pos.X - this.cx, 2) + Math.Pow(pos.Y - this.cy, 2));
+            return (dr < r);
+        }
+
+        public void SetPosition(Point pos)
+        {
+            this.cx = pos.X;
+            this.cy = pos.Y;
+        } 
 
         public void RunOnce(SimsAffect affect)
         {
