@@ -29,6 +29,7 @@ namespace winfrm_painting2
         public Form1()
         {
             InitializeComponent();
+            this.DoubleBuffered = true; // 使用雙緩衝圖形解決
         }
 
         protected override void OnLoad(EventArgs e)
