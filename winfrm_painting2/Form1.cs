@@ -137,30 +137,40 @@ namespace winfrm_painting2
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            //Debug.Print("ON : Form1_MouseClick");
+            Debug.Print("ON : Form1_MouseClick");
 
-            //this.m_selectedState = null;
-            //foreach (var c in m_states)
-            //{
-            //    if (c.HitTest(e.Location))
-            //    {
-            //        this.m_selectedState = c;
-            //        break;
-            //    }
-            //}
+            switch(e.Button)
+            {
+                case MouseButtons.Left:
+                    this.m_selectedState = null;
+                    foreach (var c in m_states)
+                    {
+                        if (c.HitTest(e.Location))
+                        {
+                            this.m_selectedState = c;
+                            //c.SetPosition(e.Location);
+                            propViewer.SelectedObject = c;
+                            break;
+                        }
+                    }
 
-            //// 重繪畫面
-            //this.Invalidate();
+                    // 重繪畫面
+                    this.Invalidate();
+                    break;
+                case MouseButtons.Right:
+
+
+                    break;
+            }            
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            Debug.Print("ON : Form1_MouseMove");
+            //Debug.Print("ON : Form1_MouseMove");
 
-            this.m_selectedState = null;
             if(e.Button == MouseButtons.Left)
             {
-                //this.m_selectedState = null;
+                this.m_selectedState = null;
                 foreach (var c in m_states)
                 {
                     if (c.HitTest(e.Location))

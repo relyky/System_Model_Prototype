@@ -12,7 +12,7 @@ namespace winfrm_painting2
 {
     public class SimsState
     {
-        #region properties
+        #region attributes
         protected string name = @"_name";
         protected float value = 1000.0f;
         protected float delta = 1.0f;
@@ -31,9 +31,20 @@ namespace winfrm_painting2
 
         //public int CX { get { return this.cx; }}
         //public int CY { get { return this.cy; }}
+
+        #region Property
         public PointF Location { get { return new PointF(this.cx, this.cy); } }
 
-        public String Name { get { return this.name; }}
+        public String Name { 
+            get { return this.name; }
+            set { this.name = value; }
+        }
+        public float Value
+        {
+            get { return this.value; }
+            set { this.value = value; }
+        }
+        #endregion
 
         public SimsState(string _name, int _cx, int _cy, int _r)
         {

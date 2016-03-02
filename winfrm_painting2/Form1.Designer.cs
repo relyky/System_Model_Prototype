@@ -34,6 +34,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblRunRound = new System.Windows.Forms.Label();
             this.btnRunStep = new System.Windows.Forms.Button();
+            this.propViewer = new System.Windows.Forms.PropertyGrid();
+            this.splitter1 = new System.Windows.Forms.Splitter();
             this.SuspendLayout();
             // 
             // btnAddEntity
@@ -80,11 +82,31 @@
             this.btnRunStep.UseVisualStyleBackColor = true;
             this.btnRunStep.Click += new System.EventHandler(this.btnRunStep_Click);
             // 
+            // propViewer
+            // 
+            this.propViewer.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.propViewer.Dock = System.Windows.Forms.DockStyle.Right;
+            this.propViewer.Location = new System.Drawing.Point(613, 0);
+            this.propViewer.Name = "propViewer";
+            this.propViewer.Size = new System.Drawing.Size(180, 402);
+            this.propViewer.TabIndex = 4;
+            // 
+            // splitter1
+            // 
+            this.splitter1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.splitter1.Location = new System.Drawing.Point(603, 0);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(10, 402);
+            this.splitter1.TabIndex = 5;
+            this.splitter1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(793, 402);
+            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.propViewer);
             this.Controls.Add(this.btnRunStep);
             this.Controls.Add(this.lblRunRound);
             this.Controls.Add(this.btnRun);
@@ -105,6 +127,8 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblRunRound;
         private System.Windows.Forms.Button btnRunStep;
+        private System.Windows.Forms.PropertyGrid propViewer;
+        private System.Windows.Forms.Splitter splitter1;
     }
 }
 
