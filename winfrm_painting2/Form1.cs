@@ -23,6 +23,7 @@ namespace winfrm_painting2
         #endregion
 
         protected SimsState m_selectedState = null;
+        protected SimsAffect m_selectedAffect = null;
 
         protected int runRound = 0;
 
@@ -30,6 +31,7 @@ namespace winfrm_painting2
         {
             InitializeComponent();
             this.DoubleBuffered = true; // 使用雙緩衝圖形解決
+            this.KeyPreview = true; // 可接受key event
         }
 
         protected override void OnLoad(EventArgs e)
@@ -51,6 +53,7 @@ namespace winfrm_painting2
             m_affects.Add(new SimsAffect(m_states[4], m_states[0], -1.25f));
 
             m_selectedState = m_states[2];
+            propViewer.SelectedObject = m_selectedState;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -67,6 +70,8 @@ namespace winfrm_painting2
             if(m_selectedState != null)
                 m_selectedState.DrawFocus(e.Graphics);
 
+            if (m_selectedAffect != null)
+                m_selectedAffect.DrawFocus(e.Graphics);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -132,24 +137,60 @@ namespace winfrm_painting2
 
         private void btnAddEntity_Click(object sender, EventArgs e)
         {
+            SimsState newState = new SimsState("新狀態", 150, 60, 50);
+            m_selectedState = newState;
+            m_states.Add(newState);
 
+            this.Invalidate();
         }
 
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            Debug.Print("ON : Form1_MouseClick");
+            //Debug.Print("ON : Form1_MouseMove");
 
-            switch(e.Button)
+            switch (e.Button)
             {
                 case MouseButtons.Left:
+                    //# 若有選取 SimsState 則移動它
+                    if(m_selectedState != null)
+                    {
+                        m_selectedState.SetPosition(e.Location); // 移動
+                        this.Invalidate(); // 重繪畫面
+                    }
+                    break;
+            }
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+            Debug.Print("ON : Form1_MouseDown");
+
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+
+
+                    //# 選取 SimsAffect
+                    this.m_selectedAffect = null;
+                    foreach (var c in m_affects)
+                    {
+                        if (c.HitTest(e.Location))
+                        {
+                            this.m_selectedAffect = c; // 選取 SimsState
+                            propViewer.SelectedObject = c; // 顯示屬性
+                            break;
+                        }
+                    }
+
+                    //# 選取 SimsState
                     this.m_selectedState = null;
                     foreach (var c in m_states)
                     {
                         if (c.HitTest(e.Location))
                         {
-                            this.m_selectedState = c;
-                            //c.SetPosition(e.Location);
-                            propViewer.SelectedObject = c;
+                            this.m_selectedState = c; // 選取 SimsState
+                            propViewer.SelectedObject = c; // 顯示屬性
+                            this.m_selectedAffect = null;
                             break;
                         }
                     }
@@ -157,33 +198,30 @@ namespace winfrm_painting2
                     // 重繪畫面
                     this.Invalidate();
                     break;
-                case MouseButtons.Right:
-
-
-                    break;
-            }            
+            }   
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            //Debug.Print("ON : Form1_MouseMove");
-
-            if(e.Button == MouseButtons.Left)
+            //# 刪除
+            if (e.KeyCode == Keys.Delete)
             {
-                this.m_selectedState = null;
-                foreach (var c in m_states)
+                //# 移除項目
+                if (m_selectedState != null)
                 {
-                    if (c.HitTest(e.Location))
+                    // 移除 SimsAffect
+                    foreach(var o in m_affects.Where(c => c.A == m_selectedState || c.B == m_selectedState).ToList())
                     {
-                        this.m_selectedState = c;
-                        c.SetPosition(e.Location);
-                        break;
+                        m_affects.Remove(o);
                     }
-                }
 
-                // 重繪畫面
-                this.Invalidate();
+                    // 移除 SimsState
+                    m_states.Remove(m_selectedState);
+                    m_selectedState = null;
+                    this.Invalidate(); // 重繪畫面
+                }
             }
+
         }
 
     }

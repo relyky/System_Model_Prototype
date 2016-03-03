@@ -147,7 +147,7 @@ namespace winfrm_painting2
 
     public class SimsAffect
     {
-        #region properties
+        #region attributes properties
         public SimsState A;
         public SimsState B;
         public float affectVolumn;
@@ -157,6 +157,16 @@ namespace winfrm_painting2
         protected Pen pen;
         protected Font font = SystemFonts.DialogFont;
         protected Brush brush = Brushes.BlueViolet;
+        protected Pen focusPen = new Pen(Color.YellowGreen, 3);
+        #endregion
+
+        #region properties
+        public float AffectVolumn
+        {
+            get { return this.affectVolumn; }
+            set { this.affectVolumn = value; }
+        }
+
         #endregion
 
         public SimsAffect(SimsState _A, SimsState _B, float _volum)
@@ -176,10 +186,7 @@ namespace winfrm_painting2
 
         public void Draw(Graphics g)
         {
-            //Debug.Print(A.Name);
-
             PointF Ap = A.CalcCircleBoundPos(B);
-
             PointF Bp = B.CalcCircleBoundPos(A);
 
             //g.DrawLine(this.pen, A.Location, B.Location);
@@ -191,6 +198,38 @@ namespace winfrm_painting2
             float x = (A.Location.X + B.Location.X) / 2.0f;
             float y = (A.Location.Y + B.Location.Y) / 2.0f;            
             g.DrawString(volumn_str, this.font, this.brush, x, y);
+        }
+
+        public void DrawFocus(Graphics g)
+        {
+            PointF Ap = A.CalcCircleBoundPos(B);
+            PointF Bp = B.CalcCircleBoundPos(A);
+
+            //g.DrawLine(this.pen, A.Location, B.Location);
+            g.DrawLine(this.focusPen, Ap, Bp);
+
+            // show value 
+            string volumn_str = this.affectVolumn.ToString("N2");
+            SizeF sz = g.MeasureString(volumn_str, this.font);
+            float x = (A.Location.X + B.Location.X) / 2.0f;
+            float y = (A.Location.Y + B.Location.Y) / 2.0f;
+            g.DrawString(volumn_str, this.font, this.brush, x, y);
+        }
+
+        public bool HitTest(Point pos)
+        {
+            double cx = pos.X;
+            double cy = pos.Y;
+            double x1 = this.A.Location.X;
+            double y1 = this.A.Location.Y;
+            double x2 = this.B.Location.X;
+            double y2 = this.B.Location.Y;
+
+            double dr = Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
+            double da = Math.Sqrt(Math.Pow(cx - x1, 2) + Math.Pow(cy - y1, 2));
+            double db = Math.Sqrt(Math.Pow(cx - x2, 2) + Math.Pow(cy - y2, 2));
+
+            return ((da + db - dr) < 0.3);
         }
 
         public void RunOnce()
@@ -213,6 +252,13 @@ namespace winfrm_painting2
             float h = H * rate;
 
             return new PointF(cx + w, cy + h);
+        }
+
+        public static double CalcDotToLineDistance(double cx, double cy, double x1, double y1, double x2, double y2)
+        {
+            // 計算點到線的距離
+            return (Math.Abs((y2 - y1) * cx + (x1 - x2) * cy + ((x2 * y1) - (x1 * y2)))) 
+                 / (Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)));
         }
 
     }
