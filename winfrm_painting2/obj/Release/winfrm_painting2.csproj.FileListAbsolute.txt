@@ -6,3 +6,4 @@ D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Release\winfrm
 D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Release\winfrm_painting2.csproj.GenerateResource.Cache
 D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Release\winfrm_painting2.exe
 D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Release\winfrm_painting2.pdb
+D:\MyDocuments\GitHub\System_Model_Prototype\winfrm_painting2\obj\Release\winfrm_painting2.csprojResolveAssemblyReference.cache

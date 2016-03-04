@@ -16,14 +16,15 @@ namespace winfrm_painting2
     public partial class Form1 : Form
     {
         #region Document
-
         protected Collection<SimsState> m_states = new Collection<SimsState>();
         protected Collection<SimsAffect> m_affects = new Collection<SimsAffect>();
-
         #endregion
 
         protected SimsState m_selectedState = null;
         protected SimsAffect m_selectedAffect = null;
+
+        protected bool f_addnewAffect = false; // action state
+        protected Point m_mouseLocation;
 
         protected int runRound = 0;
 
@@ -72,6 +73,11 @@ namespace winfrm_painting2
 
             if (m_selectedAffect != null)
                 m_selectedAffect.DrawFocus(e.Graphics);
+
+            if (this.f_addnewAffect && this.m_selectedState != null)
+            {
+                e.Graphics.DrawLine(Pens.OrangeRed, m_selectedState.Location, m_mouseLocation);
+            }
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -148,6 +154,13 @@ namespace winfrm_painting2
         {
             //Debug.Print("ON : Form1_MouseMove");
 
+            if (this.f_addnewAffect && this.m_selectedState != null)
+            {
+                this.m_mouseLocation = e.Location;
+                this.Invalidate();
+                return;
+            }
+
             switch (e.Button)
             {
                 case MouseButtons.Left:
@@ -169,6 +182,21 @@ namespace winfrm_painting2
             {
                 case MouseButtons.Left:
 
+                    if(f_addnewAffect)
+                    {
+                        foreach (var c in m_states)
+                        {
+                            if (c.HitTest(e.Location))
+                            {
+                                m_affects.Add(new SimsAffect(m_selectedState, c, +1.0f));
+                                this.f_addnewAffect = false;
+                                this.m_selectedState = null;
+                            }
+                        }
+
+                        this.Invalidate();
+                        break; // 
+                    }
 
                     //# 選取 SimsAffect
                     this.m_selectedAffect = null;
@@ -198,6 +226,26 @@ namespace winfrm_painting2
                     // 重繪畫面
                     this.Invalidate();
                     break;
+                case MouseButtons.Right:
+
+                    //# 選取 SimsState
+                    this.m_selectedState = null;
+                    this.f_addnewAffect = false;
+                    foreach (var c in m_states)
+                    {
+                        if (c.HitTest(e.Location))
+                        {
+                            this.m_selectedState = c; // 選取 SimsState
+                            propViewer.SelectedObject = c; // 顯示屬性
+                            this.f_addnewAffect = true; // 開始新增 SimsAffect
+                            this.m_selectedAffect = null;
+                            break;
+                        }
+                    }
+
+                    // 重繪畫面
+                    this.Invalidate();
+                    break;
             }   
         }
 
@@ -218,6 +266,13 @@ namespace winfrm_painting2
                     // 移除 SimsState
                     m_states.Remove(m_selectedState);
                     m_selectedState = null;
+                    this.Invalidate(); // 重繪畫面
+                }
+                else if(m_selectedAffect != null)
+                {
+                    // 移除 SimsAffect
+                    m_affects.Remove(m_selectedAffect);
+                    m_selectedAffect = null;
                     this.Invalidate(); // 重繪畫面
                 }
             }
